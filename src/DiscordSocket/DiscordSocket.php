@@ -64,11 +64,14 @@ class DiscordSocket {
 		while (true) {
 			if (microtime(true)-$this->lastHeartbeat >= ($this->heartbeatInterval/1000) ||
 				stream_get_meta_data($this->socket->getSocket())["timed_out"]) {
-				stream_set_timeout($this->socket->getSocket(), (int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1));
+				$timeTillHeartbeat = max((int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1),1);
+				stream_set_timeout($this->socket->getSocket(), $timeTillHeartbeat);
 				$this->sendHeartbeat();
 			}
 			// heartbeat "timer"
-			stream_set_timeout($this->socket->getSocket(), (int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1));
+			// we can do this because the gateway will always resume on its end.  Therefore if it "times out" we know that our "timer" has elapsed
+			$timeTillHeartbeat = max((int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1),1);
+			stream_set_timeout($this->socket->getSocket(), $timeTillHeartbeat);
 			$this->parseResponse($this->socket->receive());
 		}
 	}
