@@ -63,15 +63,15 @@ class DiscordSocket {
 		$this->lastHeartbeat = microtime(true);
 		while (true) {
 			if (microtime(true)-$this->lastHeartbeat >= ($this->heartbeatInterval/1000) ||
-				stream_get_meta_data($this->socket->getSocket())["timed_out"]) {
+				@stream_get_meta_data($this->socket->getSocket())["timed_out"]) {
 				$timeTillHeartbeat = max((int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1),1);
-				stream_set_timeout($this->socket->getSocket(), $timeTillHeartbeat);
+				$this->socket->setTimeout($timeTillHeartbeat);
 				$this->sendHeartbeat();
 			}
 			// heartbeat "timer"
 			// we can do this because the gateway will always resume on its end.  Therefore if it "times out" we know that our "timer" has elapsed
 			$timeTillHeartbeat = max((int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1),1);
-			stream_set_timeout($this->socket->getSocket(), $timeTillHeartbeat);
+			$this->socket->setTimeout($timeTillHeartbeat);
 			$this->parseResponse($this->socket->receive());
 		}
 	}
@@ -90,13 +90,55 @@ class DiscordSocket {
 			return;
 		}
 
-		if ($in == "Rate limited.") {
-			$this->discord->log("Rate limited", 1);
+		if ($this->socket->getLastOpcode() == "close") {
+			switch (strtolower(substr($in, 0, 11))) {
+				case "unknown err":
+					$err = "4000 - unknown error";
+					break;
+				case "unknown opc":
+					$err = "4001 - unknown opcode";
+					break;
+				case "decode erro":
+					$err = "4002 - decode error";
+					break;
+				case "not authent":
+					$err = "4003 - not authenticated";
+					break;
+				case "authenticat":
+					$err = "4004 - authentication failed";
+					break;
+				case "already aut":
+					$err = "4005 - already authenticated";
+					break;
+				case "invalid seq":
+					$err = "4007 - invalid seq";
+					break;
+				case "rate limite":
+					$err = "4008 - rate limited";
+					break;
+				case "session tim":
+					$err = "4009 - session timeout";
+					break;
+				case "invalid sha":
+					$err = "4010 - invalid shard";
+					break;
+				case "sharding re":
+					$err = "4011 - sharding required";
+					break;
+				default:
+					$err = "Undocumented error";
+			}
+			$this->discord->log("Socket error: ".$err, 0);
 			return;
 		}
 
 		if (substr($in, 0, 1) != "{" && strlen($in) !== 0) {
-			$in = zlib_decode($in);
+			$decoded = zlib_decode($in);
+			if ($decoded === false) {
+				$this->discord->log("Recieved an unknown response from gateway ".$in, 1);
+				return;
+			}
+			$in = $decoded;
 		}
 
 		$response = json_decode($in);
@@ -104,8 +146,9 @@ class DiscordSocket {
 		if (!is_null($response)) {
 			switch ($response->op) {
 				case 0: // Dispatch
-					$this->discord->log("Received gateway dispatch with name ".$response->t, 3);
-					// $this->lastFrame = $response->s;
+					$this->discord->log("Received gateway dispatch #".$response->s." ".$response->t, 3);
+					$this->lastFrame = $response->s;
+					// $this->discord->dispatch($response->t, $response->s);
 					break;
 				case 1: // Heartbeat
 					$this->discord->log("Heartbeat requested", 3);

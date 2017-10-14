@@ -2,8 +2,7 @@
 
 namespace SimpleDiscord\DiscordSocket;
 
-class BetterClient extends \WebSocket\Client
-{
+class BetterClient extends \WebSocket\Client {
 	public function getSocket() {
 		return $this->socket;
 	}
@@ -35,7 +34,6 @@ class BetterClient extends \WebSocket\Client
 	}
 
 	protected function receive_fragment() {
-
 		// Just read the main fragment information first.
 		$data = $this->read(2);
 
