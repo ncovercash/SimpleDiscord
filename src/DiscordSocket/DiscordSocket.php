@@ -156,9 +156,24 @@ class DiscordSocket {
 					break;
 				case 7: // Reconnect
 					$this->discord->log("Reconnect requested", 2);
+
+					$this->discord->log("Creating websocket", 2);
+
+					$this->socket = new \SimpleDiscord\DiscordSocket\BetterClient(self::$gatewayURL."?v=".self::CURRENT_GATEWAY_VERSION."&encoding=json", [
+						"timeout" => 300
+					]);
+
+					$this->socket->connectIfNotConnected();
+
+					$this->discord->log("Identifying to websocket", 3);
+					
+					$this->identify();
+
+					$this->discord->log("Websocket initialized.  Listening", 1);
 					break;
 				case 9: // Invalid Session
 					$this->discord->log("Invalid session provided", 2);
+					sleep(random_int(1, 5));
 					$this->identify();
 					break;
 				case 10: // Hello
