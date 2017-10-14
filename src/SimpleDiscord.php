@@ -12,6 +12,8 @@ class SimpleDiscord {
 	private $restClient;
 	private $socket;
 
+	private $eventHandlers = [];
+
 	public function __construct(array $params) {		
 		if (!isset($params["token"])) {
 			throw new \InvalidArgumentException("No token provided!  Token should be provided as a parameter with key \"token\".");
@@ -24,7 +26,7 @@ class SimpleDiscord {
 
 		$this->params = (object)$params;
 
-		$this->log("You are using ".self::LONG_VERSION, 1);
+		$this->log(self::LONG_VERSION, 0);
 
 		$this->log("Initializing REST Client", 2);
 
@@ -32,6 +34,8 @@ class SimpleDiscord {
 			'Authorization' => 'Bot '.$this->params->token,
 			'User-Agent' => self::LONG_VERSION
 		]);
+
+		$this->initializeHandlers();
 	}
 
 	public function run() {
@@ -59,5 +63,38 @@ class SimpleDiscord {
 
 	public function getRestClient() : \SimpleDiscord\RestClient\RestClient {
 		return $this->restClient;
+	}
+
+	private function initializeHandlers() {}
+
+	public function registerHandler($event, $handler) {
+		if (!isset($this->eventHandlers[$event])) {
+			$this->eventHandlers[$event] = [];
+		}
+		$this->eventHandlers[$event][] = $handler;
+	}
+
+	public function dispatch($event, $data) {
+		if (!isset($this->eventHandlers[$event])) {
+			$this->log("Unhandled event: ".$event, 0);
+
+			// var_dump($data);
+		} else {
+			// any uncased events will be passed as the raw data from the Discord API
+
+			switch ($event) {
+				case 'READY':
+					# code...
+					break;
+				
+				default:
+					$this->log("Unknown event ".$event." - passing data as raw object.", 3);
+					break;
+			}
+
+			foreach ($this->eventHandlers[$event] as $handler) {
+				$handler($this, $data);
+			}
+		}
 	}
 }

@@ -126,7 +126,7 @@ class DiscordSocket {
 					$err = "4011 - sharding required";
 					break;
 				default:
-					$err = "Undocumented error";
+					$err = "Undocumented error - ".$in;
 			}
 			$this->discord->log("Socket error: ".$err, 0);
 			return;
@@ -148,7 +148,7 @@ class DiscordSocket {
 				case 0: // Dispatch
 					$this->discord->log("Received gateway dispatch #".$response->s." ".$response->t, 3);
 					$this->lastFrame = $response->s;
-					// $this->discord->dispatch($response->t, $response->s);
+					$this->discord->dispatch($response->t, $response->d);
 					break;
 				case 1: // Heartbeat
 					$this->discord->log("Heartbeat requested", 3);
