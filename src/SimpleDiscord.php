@@ -20,9 +20,9 @@ class SimpleDiscord {
 		}
 
 		$params["debug"] = (isset($params["debug"]) &&
-							$params["debug"] <= 3 && $params["debug"] >= 0)
-							? $params["debug"]
-							: 1;
+			$params["debug"] <= 3 && $params["debug"] >= 0)
+			? $params["debug"]
+			: 1;
 
 		$this->params = (object)$params;
 
