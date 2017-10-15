@@ -9,10 +9,6 @@ abstract class Image implements \SimpleDiscord\Structures\Substructures\Substruc
 
 	public abstract function allowedFormats() : array;
 
-	public function getBaseURL() : string {
-		return self::BASE_URI.$this->url;
-	}
-
 	// will, by default, round up
 	// and use the png format if specified is invalid/nonexistent
 	public function getURL(int $size=512, string $format="png", bool $roundUp=true) : string {
@@ -22,7 +18,7 @@ abstract class Image implements \SimpleDiscord\Structures\Substructures\Substruc
 
 		$requestedFormat = in_array($format, $this->allowedFormats()) ? $format : "png";
 
-		return $this->getBaseURL.".".$requestedFormat."?size=".pow(2, $requestedPower);
+		return self::BASE_URI.$this->url.".".$requestedFormat."?size=".pow(2, $requestedPower);
 	}
 
 	public function __toString() : string {

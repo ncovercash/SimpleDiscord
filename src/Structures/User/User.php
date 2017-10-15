@@ -226,6 +226,16 @@ class User implements \SimpleDiscord\Structures\Structure {
 		return isset($this->data->$name);
 	}
 
+	public function __toString() : string {
+		return implode("\n", [
+			"User object:",
+			"  ID: ".$this->id,
+			"  Username: ".$this->username,
+			"  Discriminator: ".$this->discriminator,
+			"  Avatar: ".$this->avatar
+		]);
+	}
+
 	public function freshen() {
 		$this->populate();
 	}
