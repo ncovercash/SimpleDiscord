@@ -1,6 +1,6 @@
 <?php
 
-// will print the authenticated user
+// will print the authenticated user (uses REST api)
 
 require_once "autoload.php";
 

@@ -1,6 +1,6 @@
 <?php
 
-// will print the authenticated user
+// will print the authenticated user (uses READY from socket)
 
 require_once "autoload.php";
 
