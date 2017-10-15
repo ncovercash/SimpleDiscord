@@ -42,10 +42,11 @@ class SimpleDiscord {
 	public function run() {
 		$this->log("Creating websocket", 1);
 		$this->socket = new \SimpleDiscord\DiscordSocket\DiscordSocket($this);
+		$this->socket->start();
 	}
 
 	public function quit() {
-		$this->socket->getSocket->close();
+		$this->socket->getSocket()->close();
 		$this->log("Exiting", 0);
 		die();
 	}

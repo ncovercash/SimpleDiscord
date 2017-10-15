@@ -38,7 +38,11 @@ class DiscordSocket {
 		
 		$this->identify();
 
-		$this->discord->log("Websocket initialized.  Listening", 1);
+		$this->discord->log("Websocket initialized.", 1);
+	}
+
+	public function start() {
+		$this->discord->log("Listening on WS", 1);
 
 		$this->run();
 	}
