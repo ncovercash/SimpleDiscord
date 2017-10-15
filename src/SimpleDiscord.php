@@ -98,7 +98,17 @@ class SimpleDiscord {
 
 			switch ($event) {
 				case 'READY':
-					var_dump($data);
+					$this->user = new \SimpleDiscord\Structures\User\User(
+						$data->user->id,
+						$data->user->username,
+						$data->user->discriminator,
+						$data->user->avatar,
+						isset($data->user->bot) ? $data->user->bot : null,
+						isset($data->user->mfaEnabled) ? $data->user->mfaEnabled : null,
+						isset($data->user->verified) ? $data->user->verified : null,
+						isset($data->user->email) ? $data->user->email : null,
+						$this
+					);
 
 					$this->sessionId = $data->session_id;
 					break;
@@ -108,7 +118,7 @@ class SimpleDiscord {
 			}
 
 			foreach ($this->eventHandlers[$event] as $handler) {
-				$handler($this, $data);
+				$handler($data, $this);
 			}
 		}
 	}
