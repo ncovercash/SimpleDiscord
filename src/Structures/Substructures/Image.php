@@ -8,7 +8,8 @@ abstract class Image implements \SimpleDiscord\Structures\Substructures\Substruc
 	const BASE_URI = "https://cdn.discordapp.com/";
 
 	public abstract function allowedFormats() : array;
-	public abstract function getBaseUrl() : string {
+
+	public function getBaseURL() : string {
 		return self::BASE_URI.$this->url;
 	}
 
@@ -21,7 +22,7 @@ abstract class Image implements \SimpleDiscord\Structures\Substructures\Substruc
 
 		$requestedFormat = in_array($format, $this->allowedFormats()) ? $format : "png";
 
-		return $this->getBaseUrl.".".$requestedFormat."?size=".pow(2, $requestedPower);
+		return $this->getBaseURL.".".$requestedFormat."?size=".pow(2, $requestedPower);
 	}
 
 	public function __toString() : string {
