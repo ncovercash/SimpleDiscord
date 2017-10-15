@@ -37,6 +37,10 @@ class SimpleDiscord {
 			'Authorization' => 'Bot '.$this->params->token,
 			'User-Agent' => self::LONG_VERSION
 		], $this);
+
+		$this->user = $this->restClient->user->getUser();
+
+		$this->log("Authenticated as @".$this->user->username."#".$this->user->discriminator, 1);
 	}
 
 	public function run() {
@@ -98,18 +102,7 @@ class SimpleDiscord {
 
 			switch ($event) {
 				case 'READY':
-					$this->user = new \SimpleDiscord\Structures\User\User(
-						$data->user->id,
-						$data->user->username,
-						$data->user->discriminator,
-						$data->user->avatar,
-						isset($data->user->bot) ? $data->user->bot : null,
-						isset($data->user->mfaEnabled) ? $data->user->mfaEnabled : null,
-						isset($data->user->verified) ? $data->user->verified : null,
-						isset($data->user->email) ? $data->user->email : null,
-						$this
-					);
-
+					var_dump($data);
 					$this->sessionId = $data->session_id;
 					break;
 				default:
