@@ -42,19 +42,72 @@ class User implements \SimpleDiscord\Structures\Structure {
 		$this->email = $email;
 	}
 
-	private function setId(string $id) {
+	private function internalGetId() {
+		return $this->data->id->getData();
+	}
+
+	private function internalGetUsername() {
+		if ($this->data->username->getConfidence() != 2) {
+			$this->populate();
+		}
+		return $this->data->username->getData();
+	}
+
+	private function internalGetDiscriminator() {
+		if ($this->data->discriminator->getConfidence() != 2) {
+			$this->populate();
+		}
+		return $this->data->discriminator->getData();
+	}
+
+	private function internalGetAvatar() {
+		if ($this->data->avatar->getConfidence() != 2) {
+			$this->populate();
+		}
+		return $this->data->avatar->getData();
+	}
+
+	private function internalGetBot() {
+		if ($this->data->bot->getConfidence() != 2) {
+			$this->populate();
+		}
+		return $this->data->bot->getData();
+	}
+
+	private function internalGetMfaEnabled() {
+		if ($this->data->mfaEnabled->getConfidence() != 2) {
+			$this->populate();
+		}
+		return $this->data->mfaEnabled->getData();
+	}
+
+	private function internalGetVerified() {
+		if ($this->data->verified->getConfidence() != 2) {
+			$this->populate();
+		}
+		return $this->data->verified->getData();
+	}
+
+	private function internalGetEmail() {
+		if ($this->data->email->getConfidence() != 2) {
+			$this->populate();
+		}
+		return $this->data->email->getData();
+	}
+
+	private function internalSetId(string $id) {
 		$this->data->id->setData($id);
 	}
 
-	private function setUsername(?string $username) {
+	private function internalSetUsername(?string $username) {
 		$this->data->username->setData($username);
 	}
 
-	private function setDiscriminator(?string $discriminator) {
+	private function internalSetDiscriminator(?string $discriminator) {
 		$this->data->discriminator->setData($discriminator);
 	}
 
-	private function setAvatar(?string $avatar) {
+	private function internalSetAvatar(?string $avatar) {
 		if (!is_null($avatar)) {
 			$this->data->avatar->setConfidence(2);
 		} else {
@@ -64,19 +117,19 @@ class User implements \SimpleDiscord\Structures\Structure {
 		$this->data->avatar->setData(new \SimpleDiscord\Structures\User\Avatar($this->id, $this->discriminator, $avatar));
 	}
 
-	private function setBot(?bool $bot) {
+	private function internalSetBot(?bool $bot) {
 		$this->data->bot->setData($bot);
 	}
 
-	private function setMfaEnabled(?bool $mfaEnabled) {
+	private function internalSetMfaEnabled(?bool $mfaEnabled) {
 		$this->data->mfaEnabled->setData($mfaEnabled);
 	}
 
-	private function setVerified(?bool $verified) {
+	private function internalSetVerified(?bool $verified) {
 		$this->data->verified->setData($verified);
 	}
 
-	private function setEmail(?string $email) {
+	private function internalSetEmail(?string $email) {
 		$this->data->email->setData($email);
 	}
 
@@ -105,84 +158,42 @@ class User implements \SimpleDiscord\Structures\Structure {
 		$this->data->email->setConfidence(2);
 	}
 
-	private function getId() {
-		return $this->data->id->getData();
+		}
+		}
+
+
 	}
 
-	private function getUsername() {
-		if ($this->data->username->getConfidence() != 2) {
-			$this->populate();
 		}
-		return $this->data->username->getData();
-	}
 
-	private function getDiscriminator() {
-		if ($this->data->discriminator->getConfidence() != 2) {
-			$this->populate();
-		}
-		return $this->data->discriminator->getData();
-	}
 
-	private function getAvatar() {
-		if ($this->data->avatar->getConfidence() != 2) {
-			$this->populate();
-		}
-		return $this->data->avatar->getData();
-	}
-
-	private function getBot() {
-		if ($this->data->bot->getConfidence() != 2) {
-			$this->populate();
-		}
-		return $this->data->bot->getData();
-	}
-
-	private function getMfaEnabled() {
-		if ($this->data->mfaEnabled->getConfidence() != 2) {
-			$this->populate();
-		}
-		return $this->data->mfaEnabled->getData();
-	}
-
-	private function getVerified() {
-		if ($this->data->verified->getConfidence() != 2) {
-			$this->populate();
-		}
-		return $this->data->verified->getData();
-	}
-
-	private function getEmail() {
-		if ($this->data->email->getConfidence() != 2) {
-			$this->populate();
-		}
-		return $this->data->email->getData();
 	}
 
 	public function __get(string $name) {
 		switch ($name) {
 			case "id":
-				return $this->getId();
+				return $this->internalGetId();
 				break;
 			case "username":
-				return $this->getUsername();
+				return $this->internalGetUsername();
 				break;
 			case "discriminator":
-				return $this->getDiscriminator();
+				return $this->internalGetDiscriminator();
 				break;
 			case "avatar":
-				return $this->getAvatar();
+				return $this->internalGetAvatar();
 				break;
 			case "bot":
-				return $this->getBot();
+				return $this->internalGetBot();
 				break;
 			case "mfaEnabled":
-				return $this->getMfaEnabled();
+				return $this->internalGetMfaEnabled();
 				break;
 			case "verified":
-				return $this->getVerified();
+				return $this->internalGetVerified();
 				break;
 			case "email":
-				return $this->getEmail();
+				return $this->internalGetEmail();
 				break;
 			default:
 				throw new InvalidArgumentException("Property ".$name." of ".get_class()." does not exist.");
@@ -193,28 +204,28 @@ class User implements \SimpleDiscord\Structures\Structure {
 	public function __set(string $name, $value) {
 		switch ($name) {
 			case "id":
-				$this->setId($value);
+				$this->internalSetId($value);
 				break;
 			case "username":
-				$this->setUsername($value);
+				$this->internalSetUsername($value);
 				break;
 			case "discriminator":
-				$this->setDiscriminator($value);
+				$this->internalSetDiscriminator($value);
 				break;
 			case "avatar":
-				$this->setAvatar($value);
+				$this->internalSetAvatar($value);
 				break;
 			case "bot":
-				$this->setBot($value);
+				$this->internalSetBot($value);
 				break;
 			case "mfaEnabled":
-				$this->setMfaEnabled($value);
+				$this->internalSetMfaEnabled($value);
 				break;
 			case "verified":
-				$this->setVerified($value);
+				$this->internalSetVerified($value);
 				break;
 			case "email":
-				$this->setEmail($value);
+				$this->internalSetEmail($value);
 				break;
 			default:
 				throw new InvalidArgumentException("Property ".$name." of ".get_class()." does not exist.");
