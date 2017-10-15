@@ -3,7 +3,7 @@
 namespace SimpleDiscord\Structures\User;
 
 class Avatar extends \SimpleDiscord\Structures\Substructures\Image {
-	private $allowedFormats;
+	protected $allowedFormats;
 
 	public function __construct(string $id, string $discriminator, ?string $avatar) {
 		if (is_null($avatar)) {

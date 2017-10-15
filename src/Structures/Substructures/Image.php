@@ -3,7 +3,7 @@
 namespace SimpleDiscord\Structures\Substructures;
 
 abstract class Image implements \SimpleDiscord\Structures\Substructures\Substructure {
-	private $url;
+	protected $url;
 
 	const BASE_URI = "https://cdn.discordapp.com/";
 
