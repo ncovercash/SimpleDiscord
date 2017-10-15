@@ -11,7 +11,7 @@ class Field {
 		$this->confidence = $confidence;
 	}
 
-	public function setData($data=null) {
+	public function setData($data) {
 		$this->data = $data;
 		if (is_null($data)) {
 			$this->confidence = 0;

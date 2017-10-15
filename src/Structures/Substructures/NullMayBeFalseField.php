@@ -9,14 +9,17 @@ class NullMayBeFalseField extends BoolField {
 			$this->confidence = 1;
 		} else {
 			$this->data = $data;
-			$this->confidence = $confidence;
+			$this->confidence = 2;
 		}
 		if ($confidence != -1) {
 			$this->confidence = $confidence;
 		}
 	}
 
-	public function setData(?bool $data=false) {
+	public function setData($data=false) {
+		if (!is_null($data) && !is_bool($data)) {
+			throw new InvalidArgumentException("Invalid data passed to ".get_class());
+		}
 		if (is_null($data)) {
 			$this->data = false;
 		} else {

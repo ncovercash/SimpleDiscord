@@ -8,7 +8,10 @@ class StringField extends Field {
 		$this->confidence = $confidence;
 	}
 
-	public function setData(?string $data=null) {
+	public function setData($data=null) {
+		if (!is_null($data) && !is_string($data)) {
+			throw new InvalidArgumentException("Invalid data passed to ".get_class());
+		}
 		$this->data = $data;
 		if (is_null($data)) {
 			$this->confidence = 0;
