@@ -12,7 +12,9 @@ class SimpleDiscord {
 	private $restClient;
 	private $socket;
 
-	private $eventHandlers = [];
+	private $eventHandlers = [
+		"READY" => []
+	];
 
 	public function __construct(array $params) {		
 		if (!isset($params["token"])) {
@@ -63,6 +65,9 @@ class SimpleDiscord {
 		return $this->restClient;
 	}
 
+	public function getSessionId() : string {
+		return $this->sessionId;
+	}
 
 	public function registerHandler($event, $handler) {
 		if (!isset($this->eventHandlers[$event])) {

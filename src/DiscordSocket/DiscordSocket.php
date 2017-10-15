@@ -8,6 +8,8 @@ class DiscordSocket {
 	private $discord;
 	private $socket;
 
+	private $sessionId;
+
 	private $lastHeartbeat,$heartbeatInterval=PHP_INT_MAX;
 
 	private $lastFrame=null;
@@ -58,21 +60,47 @@ class DiscordSocket {
 		);
 	}
 
+	protected function reconnect() {
+		$this->socket->send(
+			json_encode([
+				'op' => 6,
+				'd' => [
+					'token' => $this->discord->getToken(),
+					'session_id' => $this->discord->getSessionId(),
+					'seq' => $this->lastFrame
+				]
+			])
+		);
+	}
+
 	public function run() {
 		$this->parseResponse($this->socket->receive()); // initial
 		$this->lastHeartbeat = microtime(true);
 		while (true) {
-			if (microtime(true)-$this->lastHeartbeat >= ($this->heartbeatInterval/1000) ||
-				@stream_get_meta_data($this->socket->getSocket())["timed_out"]) {
+			try {
+				if (microtime(true)-$this->lastHeartbeat >= ($this->heartbeatInterval/1000) ||
+					@stream_get_meta_data($this->socket->getSocket())["timed_out"]) {
+					$timeTillHeartbeat = max((int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1),1);
+					$this->socket->setTimeout($timeTillHeartbeat);
+					$this->sendHeartbeat();
+				}
+				// heartbeat "timer"
+				// we can do this because the gateway will always resume on its end.  Therefore if it "times out" we know that our "timer" has elapsed
 				$timeTillHeartbeat = max((int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1),1);
 				$this->socket->setTimeout($timeTillHeartbeat);
-				$this->sendHeartbeat();
+
+				$this->parseResponse($this->socket->receive());
+			} catch (\WebSocket\ConnectionException $e) {
+				$this->discord->log("WS ERROR - RECONNECTING: ".$message, 0);
+
+				$this->socket->close();
+
+				$this->socket = new \SimpleDiscord\DiscordSocket\BetterClient(self::$gatewayURL."?v=".self::CURRENT_GATEWAY_VERSION."&encoding=json", [
+					"timeout" => 300
+				]);
+
+				$this->reconnect();
 			}
-			// heartbeat "timer"
-			// we can do this because the gateway will always resume on its end.  Therefore if it "times out" we know that our "timer" has elapsed
-			$timeTillHeartbeat = max((int)(($this->heartbeatInterval/1000)-microtime(true)+$this->lastHeartbeat-1),1);
-			$this->socket->setTimeout($timeTillHeartbeat);
-			$this->parseResponse($this->socket->receive());
 		}
 	}
 
@@ -106,6 +134,8 @@ class DiscordSocket {
 					break;
 				case "authenticat":
 					$err = "4004 - authentication failed";
+					$this->discord->log("Invalid authentication", -1);
+					die("Invalid authentication\n");
 					break;
 				case "already aut":
 					$err = "4005 - already authenticated";
@@ -118,6 +148,7 @@ class DiscordSocket {
 					break;
 				case "session tim":
 					$err = "4009 - session timeout";
+					$this->reconnect();
 					break;
 				case "invalid sha":
 					$err = "4010 - invalid shard";
@@ -165,9 +196,9 @@ class DiscordSocket {
 
 					$this->socket->connectIfNotConnected();
 
-					$this->discord->log("Identifying to websocket", 3);
+					$this->discord->log("Reconnecting to websocket", 3);
 					
-					$this->identify();
+					$this->reconnect();
 
 					$this->discord->log("Websocket initialized.  Listening", 1);
 					break;
