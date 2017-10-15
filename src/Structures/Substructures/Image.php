@@ -23,4 +23,8 @@ abstract class Image implements \SimpleDiscord\Structures\Substructures\Substruc
 
 		return $this->getBaseUrl.".".$requestedFormat."?size=".pow(2, $requestedPower);
 	}
+
+	public function __toString() : string {
+		return $this->getURL();
+	}
 }
