@@ -13,7 +13,11 @@ class Field {
 
 	public function setData($data=null) {
 		$this->data = $data;
-		$this->confidence = 2;
+		if (is_null($data)) {
+			$this->confidence = 0;
+		} else {
+			$this->confidence = 2;
+		}
 	}
 
 	public function setConfidence($confidence=0) {
