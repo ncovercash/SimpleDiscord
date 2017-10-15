@@ -232,7 +232,11 @@ class User implements \SimpleDiscord\Structures\Structure {
 			"  ID: ".$this->id,
 			"  Username: ".$this->username,
 			"  Discriminator: ".$this->discriminator,
-			"  Avatar: ".$this->avatar
+			"  Avatar: ".$this->avatar,
+			"  Bot: ".($this->bot ? "true" : "false"),
+			"  MFA Enabled: ".($this->mfaEnabled ? "true" : "false"),
+			"  Verified Email: ".($this->verified ? "true" : "false"),
+			"  Email: ".($this->email ? $this->email : "Unknown/null")
 		]);
 	}
 

@@ -44,7 +44,9 @@ class RestClient {
 		}
 
 		$opts["http"]["header"] = $headers;
+		
+		$response = file_get_contents(self::BASE_URI.$endpoint, false, stream_context_create($opts));
 
-		return json_decode(file_get_contents(self::BASE_URI.$endpoint, false, stream_context_create($opts)));
+		return json_decode($response);
 	}
 }
