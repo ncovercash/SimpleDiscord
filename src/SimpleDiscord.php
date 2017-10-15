@@ -29,7 +29,6 @@ class SimpleDiscord {
 		$this->params = (object)$params;
 
 		$this->log(self::LONG_VERSION, 0);
-
 		$this->log("Initializing REST Client", 2);
 
 		$this->restClient = new \SimpleDiscord\RestClient\RestClient([
@@ -41,6 +40,12 @@ class SimpleDiscord {
 	public function run() {
 		$this->log("Creating websocket", 1);
 		$this->socket = new \SimpleDiscord\DiscordSocket\DiscordSocket($this);
+	}
+
+	public function quit() {
+		$this->socket->getSocket->close();
+		$this->log("Exiting", 0);
+		die();
 	}
 
 	public function log(string $in, int $requiredLevel=1) {

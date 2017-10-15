@@ -223,4 +223,8 @@ class DiscordSocket {
 
 		return $response;
 	}
+
+	public function getSocket() {
+		return $this->socket;
+	}
 }
