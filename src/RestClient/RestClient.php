@@ -4,20 +4,22 @@ namespace SimpleDiscord\RestClient;
 
 class RestClient {
 	private $headers;
-	private $bot;
+	
+	public $discord;
 
 	public $gateway;
 
 	const BASE_URI = "https://discordapp.com/api/";
 
-	public function __construct(array $headers) {
+	public function __construct(array $headers, \SimpleDiscord\SimpleDiscord $discord) {
 		$this->headers = $headers;
+		$this->discord = $discord;
 
 		$this->gateway = new Resources\Gateway($this);
 	}
 
 	public function sendRequest(string $endpoint, array $opts=["http"=>[]]) {
-		$opts["http"]["ignore_errors"] = true;
+		// $opts["http"]["ignore_errors"] = true;
 
 		if (!isset($opts["http"]["header"])) {
 			$opts["http"]["header"] = [];

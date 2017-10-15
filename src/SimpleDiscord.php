@@ -34,7 +34,7 @@ class SimpleDiscord {
 		$this->restClient = new \SimpleDiscord\RestClient\RestClient([
 			'Authorization' => 'Bot '.$this->params->token,
 			'User-Agent' => self::LONG_VERSION
-		]);
+		], $this);
 	}
 
 	public function run() {

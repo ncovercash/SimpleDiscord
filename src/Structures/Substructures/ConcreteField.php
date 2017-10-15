@@ -3,7 +3,7 @@
 namespace SimpleDiscord\Structures\Substructures;
 
 class ConcreteField extends Field {
-	public $data=null;
+	public $confidence=2;
 
 	public function __construct($data) {
 		$this->data = $data;
