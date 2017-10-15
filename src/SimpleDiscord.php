@@ -12,6 +12,8 @@ class SimpleDiscord {
 	private $restClient;
 	private $socket;
 
+	private $user;
+
 	private $eventHandlers = [
 		"READY" => []
 	];
@@ -79,6 +81,10 @@ class SimpleDiscord {
 			$this->eventHandlers[$event] = [];
 		}
 		$this->eventHandlers[$event][] = $handler;
+	}
+
+	public function getUser() : \SimpleDiscord\Structures\User\User {
+		return $this->user;
 	}
 
 	public function dispatch($event, $data) {
