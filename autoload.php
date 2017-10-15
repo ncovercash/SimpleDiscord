@@ -16,7 +16,7 @@ require_once "src/Structures/Substructures/Field.php";
 require_once "src/Structures/Substructures/ConcreteField.php";
 require_once "src/Structures/Substructures/ConcreteStringField.php";
 require_once "src/Structures/Substructures/BoolField.php";
-require_once "src/Structures/Substructures/NullIsFalseField.php";
+require_once "src/Structures/Substructures/NullMayBeFalseField.php";
 require_once "src/Structures/Substructures/NullableField.php.php";
 require_once "src/Structures/Substructures/StringField.php";
 require_once "src/Structures/Substructures/SubstructureField.php";
