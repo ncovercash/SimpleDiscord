@@ -158,15 +158,30 @@ class User implements \SimpleDiscord\Structures\Structure {
 		$this->data->email->setConfidence(2);
 	}
 
+	public function setUsername(string $username) {
+		if ($this->id != $this->discord->getUser()->id) {
+			throw new \UnexpectedValueException("You can only change your own username!");
+			return;
 		}
+		if (strlen($username) < 2 || strlen($username) > 32) {
+			throw new \UnexpectedValueException("Username must be between 2 and 32 characters in length");
+			return;
 		}
 
+		$newInfo = $this->discord->getRestClient()->user->setUsername($username);
 
+		$this->freshen();
 	}
 
+	public function setAvatar(string $file) {
+		if ($this->id != $this->discord->getUser()->id) {
+			throw new \UnexpectedValueException("You can only change your own username!");
+			return;
 		}
 
+		$newInfo = $this->discord->getRestClient()->user->setAvatar($file);
 
+		$this->freshen();
 	}
 
 	public function __get(string $name) {

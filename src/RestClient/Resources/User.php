@@ -3,7 +3,7 @@
 namespace SimpleDiscord\RestClient\Resources;
 
 class User extends BaseResource {
-	public function getUser($id="@me") : \SimpleDiscord\Structures\User\User {
+	public function getUser(string $id="@me") : \SimpleDiscord\Structures\User\User {
 		$data = $this->client->sendRequest("users/".$id);
 
 		$newObj = new \SimpleDiscord\Structures\User\User(
@@ -21,8 +21,40 @@ class User extends BaseResource {
 		return $newObj;
 	}
 
-	public function getUserRaw($id="@me") : stdClass {
+	public function getUserRaw(string $id="@me") : \stdClass {
 		$data = $this->client->sendRequest("users/".$id);
+
+		return $data;
+	}
+
+	public function setUsername(string $username) : \stdClass {
+		$data = $this->client->sendRequest(
+			"users/@me",
+			[
+				"http" => [
+					"method" => "PATCH",
+					"content" => json_encode([
+						"username" => $username
+					])
+				]
+			]
+		);
+
+		return $data;
+	}
+
+	public function setAvatar(string $file) : \stdClass {
+		$data = $this->client->sendRequest(
+			"users/@me",
+			[
+				"http" => [
+					"method" => "PATCH",
+					"content" => json_encode([
+						"avatar" => 'data:image/'.pathinfo($file, PATHINFO_EXTENSION).';base64,'.base64_encode(file_get_contents($file))
+					])
+				]
+			]
+		);
 
 		return $data;
 	}
