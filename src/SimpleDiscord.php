@@ -34,8 +34,6 @@ class SimpleDiscord {
 			'Authorization' => 'Bot '.$this->params->token,
 			'User-Agent' => self::LONG_VERSION
 		]);
-
-		$this->initializeHandlers();
 	}
 
 	public function run() {
@@ -65,7 +63,6 @@ class SimpleDiscord {
 		return $this->restClient;
 	}
 
-	private function initializeHandlers() {}
 
 	public function registerHandler($event, $handler) {
 		if (!isset($this->eventHandlers[$event])) {
@@ -84,9 +81,10 @@ class SimpleDiscord {
 
 			switch ($event) {
 				case 'READY':
-					# code...
+					var_dump($data);
+
+					$this->sessionId = $data->session_id;
 					break;
-				
 				default:
 					$this->log("Unknown event ".$event." - passing data as raw object.", 3);
 					break;
