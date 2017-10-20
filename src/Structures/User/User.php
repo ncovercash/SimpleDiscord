@@ -12,7 +12,7 @@ class User implements \SimpleDiscord\Structures\Structure {
 		// sure we _could_ make a way to find a user with username/discriminator but no
 		?string $username=null,
 		?string $discriminator=null,
-		?string $avatar=null,
+		$avatar=null, // can be obj or string
 		?bool $bot=null,
 		?bool $mfaEnabled=null,
 		?bool $verified=null,
@@ -114,7 +114,13 @@ class User implements \SimpleDiscord\Structures\Structure {
 			// avatar is nullable...so we don't know if the client omitted or there is no avatar
 			$this->data->avatar->setConfidence(1);
 		}
-		$this->data->avatar->setData(new \SimpleDiscord\Structures\User\Avatar($this->id, $this->discriminator, $avatar));
+		if (is_null($avatar) || is_string($avatar)) {
+			$this->data->avatar->setData(new \SimpleDiscord\Structures\User\Avatar($this->internalGetId(), $this->internalGetDiscriminator(), $avatar));
+		} else if ($avatar instanceof \SimpleDiscord\Structures\User\Avatar) {
+			$this->data->avatar->setData($avatar);
+		} else {
+			throw new \InvalidArgumentException("Invalid avatar provided to ".get_class());
+		}
 	}
 
 	private function internalSetBot(?bool $bot) {
@@ -211,7 +217,7 @@ class User implements \SimpleDiscord\Structures\Structure {
 				return $this->internalGetEmail();
 				break;
 			default:
-				throw new InvalidArgumentException("Property ".$name." of ".get_class()." does not exist.");
+				throw new \InvalidArgumentException("Property ".$name." of ".get_class()." does not exist.");
 				break;
 		}
 	}
@@ -243,7 +249,7 @@ class User implements \SimpleDiscord\Structures\Structure {
 				$this->internalSetEmail($value);
 				break;
 			default:
-				throw new InvalidArgumentException("Property ".$name." of ".get_class()." does not exist.");
+				throw new \InvalidArgumentException("Property ".$name." of ".get_class()." does not exist.");
 				break;
 		}
 	}
