@@ -18,7 +18,7 @@ class NullMayBeFalseField extends BoolField {
 
 	public function setData($data=false) {
 		if (!is_null($data) && !is_bool($data)) {
-			throw new InvalidArgumentException("Invalid data passed to ".get_class());
+			throw new \InvalidArgumentException("Invalid data passed to ".get_class());
 		}
 		if (is_null($data)) {
 			$this->data = false;

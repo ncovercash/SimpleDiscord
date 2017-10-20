@@ -19,7 +19,7 @@ class BetterClient extends \WebSocket\Client {
 			$buffer = fread($this->socket, $length - strlen($data));
 			if ($buffer === false) {
 				$metadata = stream_get_meta_data($this->socket);
-				throw new ConnectionException(
+				throw new \WebSocket\ConnectionException(
 					'Broken frame, read ' . strlen($data) . ' of stated '
 					. $length . ' bytes.  Stream state: '
 					. json_encode($metadata)
@@ -54,7 +54,7 @@ class BetterClient extends \WebSocket\Client {
 		$opcode_int  = ord($data[0]) & 31; // Bits 4-7
 		$opcode_ints = array_flip(self::$opcodes);
 		if (!array_key_exists($opcode_int, $opcode_ints)) {
-			throw new ConnectionException("Bad opcode in websocket frame: $opcode_int");
+			throw new \WebSocket\ConnectionException("Bad opcode in websocket frame: $opcode_int");
 		}
 		$opcode = $opcode_ints[$opcode_int];
 

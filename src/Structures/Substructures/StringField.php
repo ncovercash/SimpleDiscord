@@ -10,7 +10,7 @@ class StringField extends Field {
 
 	public function setData($data=null) {
 		if (!is_null($data) && !is_string($data)) {
-			throw new InvalidArgumentException("Invalid data passed to ".get_class());
+			throw new \InvalidArgumentException("Invalid data passed to ".get_class());
 		}
 		$this->data = $data;
 		$this->confidence = 2;

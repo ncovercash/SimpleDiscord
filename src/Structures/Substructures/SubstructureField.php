@@ -10,7 +10,7 @@ class SubstructureField extends Field {
 
 	public function setData($data=null) {
 		if (!is_null($data) && !($data instanceof Substructure)) {
-			throw new InvalidArgumentException("Invalid data passed to ".get_class());
+			throw new \InvalidArgumentException("Invalid data passed to ".get_class());
 		}
 		$this->data = $data;
 		if (is_null($data)) {

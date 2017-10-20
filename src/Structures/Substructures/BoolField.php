@@ -10,7 +10,7 @@ class BoolField extends Field {
 
 	public function setData($data=null) {
 		if (!is_null($data) && !is_bool($data)) {
-			throw new InvalidArgumentException("Invalid data passed to ".get_class());
+			throw new \InvalidArgumentException("Invalid data passed to ".get_class());
 		}
 		$this->data = $data;
 		if (is_null($data)) {

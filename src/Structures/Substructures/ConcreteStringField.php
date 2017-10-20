@@ -9,7 +9,7 @@ class ConcreteStringField extends ConcreteField {
 
 	public function setData($data=null) {
 		if (!is_string($data)) {
-			throw new InvalidArgumentException("Invalid string passed to ".get_class());
+			throw new \InvalidArgumentException("Invalid string passed to ".get_class());
 		}
 		$this->data = $data;
 	}
