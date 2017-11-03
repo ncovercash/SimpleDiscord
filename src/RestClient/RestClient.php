@@ -21,7 +21,7 @@ class RestClient {
 	}
 
 	public function sendRequest(string $endpoint, array $opts=["http"=>[]]) {
-		// $opts["http"]["ignore_errors"] = true;
+		$opts["http"]["ignore_errors"] = true;
 
 		if (!isset($opts["http"]["header"])) {
 			$opts["http"]["header"] = [];
@@ -44,7 +44,7 @@ class RestClient {
 		}
 
 		$opts["http"]["header"] = $headers;
-		
+
 		$response = file_get_contents(self::BASE_URI.$endpoint, false, stream_context_create($opts));
 
 		return json_decode($response);

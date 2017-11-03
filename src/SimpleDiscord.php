@@ -14,9 +14,7 @@ class SimpleDiscord {
 
 	private $user;
 
-	private $eventHandlers = [
-		"READY" => "self::handleReady"
-	];
+	private $eventHandlers = [];
 
 	public function __construct(array $params) {		
 		if (!isset($params["token"])) {
@@ -31,6 +29,9 @@ class SimpleDiscord {
 		$this->params = (object)$params;
 
 		$this->log(self::LONG_VERSION, 0);
+
+		$this->registerHandler("READY", [$this, 'handleReady']);
+
 		$this->log("Initializing REST Client", 2);
 
 		$this->restClient = new \SimpleDiscord\RestClient\RestClient([
@@ -97,7 +98,7 @@ class SimpleDiscord {
 			$this->log("Unhandled event: ".$event, 0);
 		} else {
 			foreach ($this->eventHandlers[$event] as $handler) {
-				$handler($data, $this);
+				call_user_func($handler, $event, $data, $this);
 			}
 		}
 	}
