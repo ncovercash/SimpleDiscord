@@ -11,4 +11,4 @@ $discord = new \SimpleDiscord\SimpleDiscord([
 
 $client = $discord->getRestClient();
 
-echo $client->user->getUser()."\n";
+echo var_dump($client->user->getUser())."\n";

@@ -9,12 +9,12 @@ $discord = new \SimpleDiscord\SimpleDiscord([
 	"debug" => 3
 ]);
 
-$discord->registerHandler("READY", function($data, \SimpleDiscord\SimpleDiscord $discord) {
-	echo $discord->getUser()."\n";
-	echo "Setting avatar to \"avatar.gif\"\n";
-	$discord->getUser()->setAvatar(__DIR__."/avatar.gif");
-	echo $discord->getUser()."\n";
-	$discord->quit();
-});
+$client = $discord->getRestClient();
 
-$discord->run();
+var_dump($client->user->getUser());
+
+echo "Setting avatar to \"avatar.gif\"\n";
+
+$client->user->setAvarar(__DIR__."/avatar.gif");
+
+var_dump($client->user->getUser());

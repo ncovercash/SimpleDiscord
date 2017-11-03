@@ -3,7 +3,7 @@
 namespace SimpleDiscord;
 
 class SimpleDiscord {
-	public const VERSION = "0.0.1";
+	public const VERSION = "0.0.2";
 	public const LONG_VERSION = 'SimpleDiscord/v'.self::VERSION.' SimpleDiscord (https://github.com/smileytechguy/SimpleDiscord, v'.self::VERSION.')';
 
 	private $params;
@@ -15,7 +15,7 @@ class SimpleDiscord {
 	private $user;
 
 	private $eventHandlers = [
-		"READY" => []
+		"READY" => "self::handleReady"
 	];
 
 	public function __construct(array $params) {		
@@ -88,28 +88,14 @@ class SimpleDiscord {
 		$this->eventHandlers[$event][] = $handler;
 	}
 
-	public function getUser() : \SimpleDiscord\Structures\User\User {
-		return $this->user;
+	private function handleReady($data) {
+		$this->sessionId = $data->session_id;
 	}
 
 	public function dispatch($event, $data) {
 		if (!isset($this->eventHandlers[$event])) {
 			$this->log("Unhandled event: ".$event, 0);
-
-			// var_dump($data);
 		} else {
-			// any uncased events will be passed as the raw data from the Discord API
-
-			switch ($event) {
-				case 'READY':
-					var_dump($data);
-					$this->sessionId = $data->session_id;
-					break;
-				default:
-					$this->log("Unknown event ".$event." - passing data as raw object.", 3);
-					break;
-			}
-
 			foreach ($this->eventHandlers[$event] as $handler) {
 				$handler($data, $this);
 			}
