@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf16f230a6543103a6afa461826f8635",
+    "content-hash": "94675a70914ea4f902ad3d9e199d45f5",
     "packages": [
         {
             "name": "textalk/websocket",
