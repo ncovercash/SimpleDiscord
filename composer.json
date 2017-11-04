@@ -1,5 +1,5 @@
 {
-    "name": "smileytechguy/SimpleDiscord",
+    "name": "smileytechguy/simple-discord",
     "description": "Boilerplate api for discord.",
     "keywords": ["discord", "gateway", "websocket"],
     "license": "Apache-2.0",
