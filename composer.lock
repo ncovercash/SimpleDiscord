@@ -4,8 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "65f33fe43e10da498a8fea1b54c82188",
-    "content-hash": "72f204933136b20aab9b7cdf28fe0d5d",
+    "content-hash": "cf16f230a6543103a6afa461826f8635",
     "packages": [
         {
             "name": "textalk/websocket",
@@ -44,7 +43,7 @@
                 }
             ],
             "description": "WebSocket client and server",
-            "time": "2015-10-09 07:32:42"
+            "time": "2015-10-09T07:32:42+00:00"
         }
     ],
     "packages-dev": [],
@@ -53,6 +52,8 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=7.1"
+    },
     "platform-dev": []
 }
