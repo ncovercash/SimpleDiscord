@@ -89,7 +89,7 @@ class SimpleDiscord {
 		$this->eventHandlers[$event][] = $handler;
 	}
 
-	private function handleReady($data) {
+	private function handleReady($event, $data, $discord) {
 		$this->sessionId = $data->session_id;
 	}
 
