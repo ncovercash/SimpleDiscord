@@ -128,7 +128,7 @@ class DiscordSocket {
 	}
 
 	public function requestGuildMembers(string $id, string $query="", int $limit=0) {
-		$this->discord->log("Requesting members with options ".serialize($status), 3);
+		$this->discord->log("Requesting members with options ".serialize([$id, $query, $limit]), 3);
 		$this->socket->send(json_encode([
 			"op" => 8,
 			"d" => [
@@ -184,6 +184,7 @@ class DiscordSocket {
 					break;
 				default:
 					$err = "Undocumented error - ".$in;
+					var_dump($err);
 			}
 			$this->discord->log("Socket error: ".$err, 0);
 			return;
