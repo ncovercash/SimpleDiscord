@@ -9,7 +9,7 @@ class User extends BaseResource {
 		return $data;
 	}
 
-	public function getDMs() : \stdClass {
+	public function getDMs() : array {
 		$data = $this->client->sendRequest("users/@me/channels");
 
 		return $data;

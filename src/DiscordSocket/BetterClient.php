@@ -153,6 +153,9 @@ class BetterClient extends \WebSocket\Client {
 		$response = null;
 		while (is_null($response)) {
 			$response = $this->receive_fragment();
+			if (strpos(error_get_last()["message"], "fread") === 0) {
+				throw new \WebSocket\ConnectionException(serialize(error_get_last()));
+			}
 		}
 		return $response;
 	}
