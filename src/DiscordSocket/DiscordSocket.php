@@ -117,6 +117,22 @@ class DiscordSocket {
 		]));
 	}
 
+	public function setStatus(array $status) {
+		$this->discord->log("Setting status to ".serialize($status), 3);
+		$this->socket->send(json_encode([
+			"op" => 3,
+			"d" => $status
+		]));
+	}
+
+	public function requestGuildMembers(array $options) {
+		$this->discord->log("Requesting members with options ".serialize($status), 3);
+		$this->socket->send(json_encode([
+			"op" => 8,
+			"d" => $options
+		]));
+	}
+
 	public function parseResponse(string $in) {
 		if ($in == "TIMED OUT") {
 			return;
