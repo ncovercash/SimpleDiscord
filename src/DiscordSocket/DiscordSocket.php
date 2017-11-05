@@ -95,7 +95,7 @@ class DiscordSocket {
 
 				$this->parseResponse($this->socket->receive());
 			} catch (\WebSocket\ConnectionException $e) {
-				$this->discord->log("WS ERROR - RECONNECTING: ".$message, 0);
+				$this->discord->log("WS ERROR - RECONNECTING: ".serialize($e), 0);
 
 				$this->socket->close();
 
