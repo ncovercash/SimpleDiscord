@@ -9,6 +9,26 @@ class User extends BaseResource {
 		return $data;
 	}
 
+	public function getDMs() : \stdClass {
+		$data = $this->client->sendRequest("users/@me/channels");
+
+		return $data;
+	}
+
+	public function createDM($id) : \stdClass {
+		$data = $this->client->sendRequest(
+			"users/@me/channels",
+			[
+				"http" => [
+					"method" => "POST",
+					"recepient_id" => $id
+				]
+			]
+		);
+
+		return $data;
+	}
+
 	public function setUsername(string $username) : \stdClass {
 		$data = $this->client->sendRequest(
 			"users/@me",
