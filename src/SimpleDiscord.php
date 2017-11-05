@@ -14,7 +14,9 @@ class SimpleDiscord {
 
 	private $user;
 
-	private $eventHandlers = [];
+	private $eventHandlers = [
+		"ALL" => []
+	];
 
 	public function __construct(array $params) {		
 		if (!isset($params["token"])) {
@@ -95,6 +97,9 @@ class SimpleDiscord {
 	}
 
 	public function dispatch($event, $data) {
+		foreach ($this->eventHandlers["ALL"] as $handler) {
+			call_user_func($handler, $event, $data, $this);
+		}
 		if (!isset($this->eventHandlers[$event])) {
 			$this->log("Unhandled event: ".$event, 0);
 		} else {
