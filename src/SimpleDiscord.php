@@ -69,8 +69,8 @@ class SimpleDiscord {
 	}
 
 	public function getToken() : string {
-		preg_match('/[^ ]*/', $this->params->token, $out);
-		var_dump($out);
+		preg_match('/[^ ]*$/', $this->params->token, $out);
+		var_dump($this->params->token, $out);
 		return $out[0];
 	}
 
