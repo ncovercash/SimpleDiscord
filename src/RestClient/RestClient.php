@@ -9,6 +9,7 @@ class RestClient {
 
 	public $gateway;
 	public $user;
+	public $channel;
 
 	const BASE_URI = "https://discordapp.com/api/";
 
@@ -18,6 +19,7 @@ class RestClient {
 
 		$this->gateway = new Resources\Gateway($this);
 		$this->user = new Resources\User($this);
+		$this->channel = new Resources\Channel($this);
 	}
 
 	public function sendRequest(string $endpoint, array $opts=["http"=>[]]) {
