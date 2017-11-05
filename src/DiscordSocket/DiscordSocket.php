@@ -234,6 +234,7 @@ class DiscordSocket {
 					break;
 				case 11: // Heartbeat ACK
 					$this->discord->log("Heartbeat acknowledged", 3);
+					$this->discord->dispatch("HEARTBEAT", (object)[]);
 					break;
 				default:
 					$this->discord->log("UNKNOWN GATEWAY OP CODE ".$response->op.".  Full event: ".$in, 0);
