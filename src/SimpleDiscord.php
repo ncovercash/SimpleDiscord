@@ -35,7 +35,7 @@ class SimpleDiscord {
 		$this->log("Initializing REST Client", 2);
 
 		$this->restClient = new \SimpleDiscord\RestClient\RestClient([
-			'Authorization' => 'Bot '.$this->params->token,
+			'Authorization' => $this->params->token,
 			'User-Agent' => self::LONG_VERSION
 		], $this);
 
@@ -67,7 +67,8 @@ class SimpleDiscord {
 	}
 
 	public function getToken() : string {
-		return $this->params->token;
+		preg_match('/[^ ]*/', $this->params->token, $out);
+		return $out[0];
 	}
 
 	public function getSocket() : \SimpleDiscord\DiscordSocket\DiscordSocket {
