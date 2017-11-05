@@ -94,10 +94,12 @@ class DiscordSocket {
 				$this->socket->setTimeout($timeTillHeartbeat);
 
 				$this->parseResponse($this->socket->receive());
-			} catch (\WebSocket\ConnectionException $e) {
-				$this->discord->log("WS ERROR - RECONNECTING: ".serialize($e), 0);
+			} catch (\Exception $e) {
+				$this->discord->log("WS ERROR - RECONNECTING AFTER 30 SECONDS: ".serialize($e), 0);
 
 				$this->socket->close();
+
+				sleep(30);
 
 				$this->socket = new \SimpleDiscord\DiscordSocket\BetterClient(self::$gatewayURL."?v=".self::CURRENT_GATEWAY_VERSION."&encoding=json", [
 					"timeout" => 300
