@@ -26,8 +26,6 @@ class DiscordSocket {
 			$this->discord->log("Gateway URI cached: ".self::$gatewayURL, 3);
 		}
 
-		$this->discord->log("Creating websocket", 2);
-
 		$this->socket = new \SimpleDiscord\DiscordSocket\BetterClient(self::$gatewayURL."?v=".self::CURRENT_GATEWAY_VERSION."&encoding=json", [
 			"timeout" => 300
 		]);
