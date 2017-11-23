@@ -127,6 +127,7 @@ class DiscordSocket {
 
 	public function requestGuildMembers(string $id, string $query="", int $limit=0) {
 		$this->discord->log("Requesting members with options ".serialize([$id, $query, $limit]), 3);
+		$this->discord->guilds[$id]->members = [];
 		$this->socket->send(json_encode([
 			"op" => 8,
 			"d" => [
